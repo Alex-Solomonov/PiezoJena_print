@@ -4,7 +4,8 @@ except ImportError:
 	from pip._internal import main as pip
 	pip(['install', '--user', 'pyserial'])
 	import serial
-
+import numpy as np
+from time import sleep
 import typing
 
 __author__ = "Alexander Solomonov"
@@ -13,7 +14,7 @@ __email__ = "solomonoff.alexandr@gmail.com"
 
 def connect(com_port: str, remote: bool = True) -> None:
 	'''
-	Connect to current controller and 
+	Connect to current controller and set type of control
 
 	Parameters
 	----------
@@ -49,3 +50,35 @@ def connect(com_port: str, remote: bool = True) -> None:
 			print('Remote control set\n')
 		else:
 			print('Manual control set\n')
+
+def draw(com_port: str, path_matrix: np.ndarray, delay_time: float) -> None:
+	'''
+	Connect to current controller and draw
+
+	Parameters
+	----------
+	com_port : string
+		Port name for connection
+
+	path_matrix : array_like
+		Array of coordinates
+
+	delay_time:
+		Time of exposure
+
+	Returns
+	-------
+	None
+
+	'''
+
+	with serial.Serial(port=com_port, baudrate=19200, xonxoff=True) as ser:
+		for coord in path_matrix:
+			x, y = coord
+
+			command = 'set,0,'+str(x)+'\r' #set x-coord
+			ser.write(command.encode())
+
+			command = 'set,1,'+str(y)+'\r' #set y-coord
+			ser.write(command.encode())
+			sleep(delay_time)
