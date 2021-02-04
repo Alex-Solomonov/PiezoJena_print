@@ -10,7 +10,7 @@ delay_time = 0.1
 #Longest side length
 length_of_side = 40. #mkm
 
-image_name = 'D:\\piezo_controller\\PiezoJena_print\\example\\logo.png'
+image_name = 'example\\logo.png'
 size = 128, 128
 
 	
